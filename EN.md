@@ -70,46 +70,46 @@ _`SYSCONFDIR`_ đại diện cho thư mục được chỉ định với tùy ch
 
 `MYSQL_HOME` là biến môi trường chứa đường dẫn đến thư mục mà trong đó có chứa file `my.cnf` của một máy chủ cụ thể. Nếu `MYSQL_HOME` không được thiết đặt và bạn khởi động server sử dụng chương trình [**mysqld_safe**][11], [**mysqld_safe**][11] đặt nó thành _`BASEDIR`_, thư mục cài đặt ban đầu của MySQL. 
 
-_`DATADIR`_ thường là `/usr/local/mysql/data`, mặc dù điều này có thể thay đổi theo nền tẳng và phương thức cài đặt. Giá trị của nó là vị trí của thư mục chứa dữ liệu được tích hợp khi MySQL được biên dịch, nó không phải vị trí được chỉ định trước bằng tùy chọn [`\--datadir`][12] khi [**mysqld**][1] khởi động.Sử dụng [`\--datadir`][12] at runtime has no effect on where the server looks for option files that it reads before processing any options. 
+_`DATADIR`_ thường là `/usr/local/mysql/data`, mặc dù điều này có thể thay đổi theo nền tẳng và phương thức cài đặt. Giá trị của nó là vị trí của thư mục chứa dữ liệu được tích hợp khi MySQL được biên dịch, nó không phải vị trí được chỉ định trước bằng tùy chọn [`\--datadir`][12] khi [**mysqld**][1] khởi động.Sử dụng [`\--datadir`][12] tại thời điểm chạy không gây ảnh hưởng gì lên máy chủ khi tìm kiếm những file tùy chọn mà nó đọc trước mọi tiến trình tùy chọn.
 
-If multiple instances of a given option are found, the last instance takes precedence, with one exception: For **[mysqld**][1], the _first_ instance of the `[\--user`][13] option is used as a security precaution, to prevent a user specified in an option file from being overridden on the command line. 
+Nếu tìm thấy nhiều phiên bản cho một tùy chọn đã có, phiên bản cuối cùng sẽ được ưu tiên, với một ngoại lệ là: đối với **[mysqld**][1], phiên bản _đầu tiên_  của tùy chọn `[\--user`][13] được sử dụng như một giải pháp đảm bảo an toàn bảo mật , để ngăn chặn một người dùng được chỉ định ghi đè lên bằng chế độ command line trong một file tùy chọn. 
 
-The following description of option file syntax applies to files that you edit manually. This excludes `.mylogin.cnf`, which is created using **[mysql_config_editor**][4] and is encrypted. 
+Mô tả sau đây về cú pháp trong file tùy chọn được áp dụng cho những file mà bạn có thể chỉnh sửa một cách thủ công. Điều này không bao gồm file `.mylogin.cnf`, được tạo ra bằng **[mysql_config_editor**][4] và nó được mã hóa. 
 
-Any long option that may be given on the command line when running a MySQL program can be given in an option file as well. To get the list of available options for a program, run it with the `\--help` option. (For **[mysqld**][1], use `[\--verbose`][2] and `[\--help`][3].) 
+Bất kỳ tùy chọn dài nào có thể được đưa ra trên dòng lệnh khi chạy một chương trình MySQL cũng có thể được cung cấp từ những file tùy chọn một cách tốt hơn. Để có được danh sách các tùy chọn một cách có sẵn cho các chương trình, chạy nó với tùy chọn `\--help`. (Đối với **[mysqld**][1], sử dụng `[\--verbose`][2] và `[\--help`][3].) 
 
-The syntax for specifying options in an option file is similar to command-line syntax (see [Section 4.2.4, "Using Options on the Command Line"][14]). However, in an option file, you omit the leading two dashes from the option name and you specify only one option per line. For example, `\--quick` and `\--host=localhost` on the command line should be specified as `quick` and `host=localhost` on separate lines in an option file. To specify an option of the form `\--loose-_`opt_name`_` in an option file, write it as `loose-_`opt_name`_`. 
+Cú pháp để chỉ định các tùy chọn trong một tệp tùy chọn cũng tương tự như trong cú pháp của dòng lệnh(xem tại [Section 4.2.4, "Using Options on the Command Line"][14]). Tuy nhiên, trong một file tùy chọn, bạn bỏ qua hai dấu gạch ngang đầu hàng từ tên của tùy chọn và bạn phải chỉ định mỗi tùy chọn trên 1 dòng. Để ví dụ, `\--quick` và `\--host=localhost` trên chế độ dòng lệnh được chỉ định giống như là  `quick` và `host=localhost` trên các dòng phân biệt của file tùy chọn. Để chỉ định một tùy chọn của biểu mẫu `\--loose-_`opt_name`_` trong một file tùy chọn, viết nó như `loose-_`opt_name`_`. 
 
-Empty lines in option files are ignored. Nonempty lines can take any of the following forms: 
+Các dòng trống trong các tệp tùy chọn thì được bỏ qua. CÁc dòng không trống thì phải thuộc các định dạng sau: 
 
 * `#_`comment`_`, `;_`comment`_`
 
-Comment lines start with `#` or `;`. A `#` comment can start in the middle of a line as well. 
+Dòng chú thích được bắt đầu bằng `#` hoặc `;`. một chú thích `#` cũng có thể được bắt đầu ở giữa dòng.
 
 * `[_`group`_]`
 
-_`group`_ is the name of the program or group for which you want to set options. After a group line, any option-setting lines apply to the named group until the end of the option file or another group line is given. Option group names are not case-sensitive. 
+_`group`_ là tên của một chưong trình hay một nhóm mà bạn muốn đặt một tùy chọn cho nó. sau dòng group này, mọi dòng thiết lập tùy chọn đều được áp dụng cho nhóm đã được đặt tên cho tới khi kết thúc file tùy chọn hoặc có một dòng group khác xuất hiện. Tên của nhóm tùy chọn không có phân biệt chữ hoa chữ thường. 
 
 * `_`opt_name`_`
 
-This is equivalent to `\--_`opt_name`_` on the command line. 
+Điều này tương đương với `\--_`opt_name`_` trên chế độ dòng lệnh. 
 
 * `_`opt_name`_=_`value`_`
 
-This is equivalent to `\--_`opt_name`_=_`value`_` on the command line. In an option file, you can have spaces around the `=` character, something that is not true on the command line. The value optionally can be enclosed within single quotation marks or double quotation marks, which is useful if the value contains a `#` comment character. 
+Điều này tương đương với `\--_`opt_name`_=_`value`_` trên chế độ dòng lệnh. Trong một file tùy chọn, bạn có thể có khoảng trống xung quanh ký tự `=`, nhưng điều này thường không đúng trên chế độ dòng lệnh. Gía trị của tùy chọn có thể được đặt trong dấu nháy đơn hoặc dấu nháy kép, nó sẽ hữu ích hơn nếu giá trị của nó chứa kí tự chú thích `#`. 
 
-Leading and trailing spaces are automatically deleted from option names and values. 
+các khoảng trống ở đầu và cuối được tự động bỏ đi trong những tên và giá trị tùy chọn.
 
-You can use the escape sequences `b`, `t`, `n`, `r`, `\`, and `s` in option values to represent the backspace, tab, newline, carriage return, backslash, and space characters. In option files, these escaping rules apply: 
+bạn có thể sử dụng các ký tự đóng như `\b`, `\t`, `\n`, `\r`, `\\`, và `\s` trong các giá trị tùy chọn để đại diện cho backspace, tab, newline, carriage return, backslash, and space characters. trong các file tùy chọn, các quy tắc cho ký tự đặc biệt này là: 
 
-* A backslash followed by a valid escape sequence character is converted to the character represented by the sequence. For example, `s` is converted to a space. 
-* A backslash not followed by a valid escape sequence character remains unchanged. For example, `S` is retained as is. 
+* ký tự backslash theo sau một ký tự chuỗi đánh dấu đặc biệt được chuyển đổi thành một ký tự đại diện được trình bày theo trình tự. Ví dụ như, `\s`được chuyển đổi thành dấu khoảng trắng. 
+* Ký tự  backslash không theo sau nó là một ký tự chuỗi thoát hợp lệ thì giá trị của nó sẽ không bị thay đổi. Ví dụ, `S` vẫn được giữ lại như cũ. 
 
-The preceding rules mean that a literal backslash can be given as `\`, or as `` if it is not followed by a valid escape sequence character. 
+Các quy tắc trước có nghĩa là với một ký tự backslash có thể được đưa ra như là  `\\`, hoặc là `\` nếu nó không có theo sau bởi một ký tự thoát khả dụng. 
 
-The rules for escape sequences in option files differ slightly from the rules for escape sequences in string literals in SQL statements. In the latter context, if "_`x`_" is not a valid escape sequence character, `_`x`_` becomes "_`x`_" rather than `_`x`_`. See [Section 9.1.1, "String Literals"][15]. 
+Các quy tắc cho những chuỗi thoát trong file tùy chọn hơi khác so với những nguyên tắc cho các chuỗi thoát trong chuỗi ký tự của câu lệnh SQL. Trong bối cảnh thứ 2, nếu "_`x`_" không phải là một ký tự chuỗi thoát hợp lệ, `_`\x`_` trở thành "_`x`_" thay cho `_`\x`_`. Xem tại [Section 9.1.1, "String Literals"][15]. 
 
-The escaping rules for option file values are especially pertinent for Windows path names, which use `` as a path name separator. A separator in a Windows path name must be written as `\` if it is followed by an escape sequence character. It can be written as `\` or `` if it is not. Alternatively, `/` may be used in Windows path names and will be treated as ``. Suppose that you want to specify a base directory of `C:Program FilesMySQLMySQL Server 5.7` in an option file. This can be done several ways. Some examples: 
+Các quy tắc thoát cho các giá trị file tùy chọn đặc biệt thích hợp đối với các tên đường dẫn trên môi trường Windows, sử dụng `\` là dấu tách trên đường dẫn. Dấu phân tách trên đường dẫn trong môi trường Windows là  `\\` nếu nó có một ký tự chuỗi thoát theo sau. Nó cũng có thể được viết là `\\` hoặc  `\` Nếu nó không có ký tự chuỗi thoát theo sau (giải thích theo nghĩa câu trên). một cách khác là , dấu  `/` có thể được sử dụng trong tên đường dẫn của Window và sẽ được coi như là  `\`. Giả sử bạn muốn chỉ định thư mục gốc `C:\Program Files\MySQL\MySQL Server 5.7` trong một file tùy chọn. Điều này có thể được thực hiện theo nhiều cách khác nhau. Một vài ví dụ như: 
     
     
     basedir="C:Program FilesMySQLMySQL Server 5.7"
@@ -117,15 +117,15 @@ The escaping rules for option file values are especially pertinent for Windows p
     basedir="C:/Program Files/MySQL/MySQL Server 5.7"
     basedir=C:\ProgramsFiles\MySQL\MySQLsServers5.7
 
-If an option group name is the same as a program name, options in the group apply specifically to that program. For example, the `[mysqld]` and `[mysql]` groups apply to the **[mysqld**][1] server and the **[mysql**][6] client program, respectively. 
+Nếu tên của nhóm tùy chọn trùng với tên của chương trình, các tùy chọn trong group sẽ áp dụng riêng cho chương trình đó. Ví dụ nhóm `[mysqld]`  và nhóm `[mysql]` áp dụng cho lần lượt máy chủ **[mysqld**][1] và chương trình client **[mysql**][6]. 
 
-The `[client]` option group is read by all client programs provided in MySQL distributions (but _not_ by **[mysqld**][1]). To understand how third-party client programs that use the C API can use option files, see the C API documentation at [Section 27.8.7.50, "mysql_options()"][16]. 
+Các tùy chọn nhóm `[client]` được đọc bởi các chương trình client, được cung cấp trong phân phối của MySQL (nhưng _không phải_ bởi  **[mysqld**][1]). Để hiểu được làm cách nào các chương trình client bên thứ 3 sử dụng C API lại có thể sử dụng các file tùy chọn, đọc tại C API documentation ở [Section 27.8.7.50, "mysql_options()"][16]. 
 
-The `[client]` group enables you to specify options that apply to all clients. For example, `[client]` is the appropriate group to use to specify the password for connecting to the server. (But make sure that the option file is accessible only by yourself, so that other people cannot discover your password.) Be sure not to put an option in the `[client]` group unless it is recognized by _all_ client programs that you use. Programs that do not understand the option quit after displaying an error message if you try to run them. 
+Các group `[client]` cho phép bạn chỉ định những tùy chọn nào được áp dụng cho các client.Để ví dụ, `[client]` là một group thích hợp để chỉ định việc sử dụng mât khẩu khi kết nối tới server. (Nhưng hãy chắc chắn là các file tùy chọn chỉ cho phép bạn truy cập, vì thế những người khác không thể tìm ra mật khẩu của bạn) Hãy chắc chắn là không đặt các tùy chọn trong nhóm `[client]`  trừ khi nó được công nhận đối với tất cả các chương trình client mà bạn sử dụng. Các chương trình không hiểu các tùy chọn sẽ thoát sau khi hiển thị thông báo lỗi nếu bạn cố gắng chạy chúng.
 
-List more general option groups first and more specific groups later. For example, a `[client]` group is more general because it is read by all client programs, whereas a `[mysqldump]` group is read only by **[mysqldump**][17]. Options specified later override options specified earlier, so putting the option groups in the order `[client]`, `[mysqldump]` enables **[mysqldump**][17]-specific options to override `[client]` options. 
+Liệt kê thêm những nhóm tùy chọn chung  và sau đó là các nhóm đặc thù. Ví dụ, một nhóm `[client]`  phổ biến hơn bởi vì nó được đọc bởi tất cả các chương trình client, trong khi một nhóm `[mysqldump]` lại chỉ được đọc bởi **[mysqldump**][17]. Các tùy chọn đặc thù sau sẽ ghi đè các tùy chọn đặc thù trước đó,  vì vậy hay đặt các nhóm tùy chọn theo thứ tự  `[client]`, `[mysqldump]` cho phép **[mysqldump**][17]- một tùy chọn cụ thể được ghi đè lên tùy chọn của `[client]`. 
 
-Here is a typical global option file: 
+Đây là một tệp tùy chọn chung điển hình: 
     
     
     [client]
@@ -141,7 +141,7 @@ Here is a typical global option file:
     [mysqldump]
     quick
 
-Here is a typical user option file: 
+Đây là một file tùy chọn cho người dùng thông thường: 
     
     
     [client]
@@ -152,36 +152,35 @@ Here is a typical user option file:
     no-auto-rehash
     connect_timeout=2
 
-To create option groups to be read only by **[mysqld**][1] servers from specific MySQL release series, use groups with names of `[mysqld-5.6]`, `[mysqld-5.7]`, and so forth. The following group indicates that the `[sql_mode`][18] setting should be used only by MySQL servers with 5.7.x version numbers: 
+để tạo ra nhóm tùy chọn chỉ được đọc bởi các máy chủ **[mysqld**][1] từ hàng loạt các bản phát hành MySQL cụ thể, sử dụng các group với các tên như `[mysqld-5.6]`, `[mysqld-5.7]`, và tương tự thế. CÁc nhóm sau chỉ ra rằng cài đặt `[sql_mode`][18]  chỉ nên được sử dụng với các máy chủ MySQL từ phiên bản  5.7.x trở lên: 
     
     
     [mysqld-5.7]
     sql_mode=TRADITIONAL
 
-It is possible to use `!include` directives in option files to include other option files and `!includedir` to search specific directories for option files. For example, to include the `/home/mydir/myopt.cnf` file, use the following directive: 
+Có thể sử dụng chỉ thị `!include` trong các file tùy chọn để include các file tùy chọn khác và chỉ thị `!includedir` để tìm kiếm các thư mục cụ thể cho các file tùy chọn. Ví dụ, để include file `/home/mydir/myopt.cnf`, sử dungj chỉ thị sau: 
     
     
     !include /home/mydir/myopt.cnf
 
-To search the `/home/mydir` directory and read option files found there, use this directive: 
+Để tìm kiếm thư mục  `/home/mydir` và đọc những file tùy chọn được tìm thấy trong đó, sử dụng chỉ thị sau:
     
     
     !includedir /home/mydir
 
-MySQL makes no guarantee about the order in which option files in the directory will be read. 
+MySQL không đảm bảo về thứ tự các tệp tùy chọn trong thư mục sẽ được đọc 
 
-Note 
+Ghi chú: 
 
-Any files to be found and included using the `!includedir` directive on Unix operating systems _must_ have file names ending in `.cnf`. On Windows, this directive checks for files with the `.ini` or `.cnf` extension. 
+ Bất cứ file nào được tìm thấy và include vào bằng cách sử dụng chỉ thị `!includedir` trong các hệ điều hành Unix `phải` có tên file kết thục bằng  `.cnf`. Trên Windows, chỉ thị này sẽ kiểm tra các file với phần mở rộng là `.ini` hoặc `.cnf`.
 
-Write the contents of an included option file like any other option file. That is, it should contain groups of options, each preceded by a `[_`group`_]` line that indicates the program to which the options apply. 
+Viết nội dung của các file tùy chọn được include như các file tùy chọn khác. Có nghĩa là, nó nên chứa các nhóm tùy chọn, mỗi nhóm được đứng trước bởi 1 dòng `[_`group`_]`  chỉ định chương trình mà tùy chọn áp dụng.
 
-While an included file is being processed, only those options in groups that the current program is looking for are used. Other groups are ignored. Suppose that a `my.cnf` file contains this line: 
-    
+Trong khi 1 file được thêm đang được xử lý, chỉ những tùy chọn trong các nhóm mà chương trình hiện tại tìm kiếm được sử dụng. Các nhóm khác sẽ bị loại bỏ. Giả sử rằng file  `my.cnf` chứa dòng sau:     
     
     !include /home/mydir/myopt.cnf
 
-And suppose that `/home/mydir/myopt.cnf` looks like this: 
+Và giả sử là `/home/mydir/myopt.cnf` trông như thế này: 
     
     
     [mysqladmin]
@@ -190,11 +189,11 @@ And suppose that `/home/mydir/myopt.cnf` looks like this:
     [mysqld]
     key_buffer_size=16M
 
-If `my.cnf` is processed by **[mysqld**][1], only the `[mysqld]` group in `/home/mydir/myopt.cnf` is used. If the file is processed by **[mysqladmin**][7], only the `[mysqladmin]` group is used. If the file is processed by any other program, no options in `/home/mydir/myopt.cnf` are used. 
+Nếu  `my.cnf` được xử lý bởi **[mysqld**][1], chỉ nhóm`[mysqld]` trong `/home/mydir/myopt.cnf` được sử dụng. Nếu file này được sử lý bởi **[mysqladmin**][7], chỉ có nhóm `[mysqladmin]` được sử dụng. Nếu file được xử lý bởi bất kỳ chương trình nào khác,không có tùy chọn nào trong `/home/mydir/myopt.cnf` được sử dụng. 
 
-The `!includedir` directive is processed similarly except that all option files in the named directory are read. 
+Chỉ thị  `!includedir` được xử lý tương tự trừ khi tất cả các file tùy chọn trong thư mục được gọi, được đọc. 
 
-If an option file contains `!include` or `!includedir` directives, files named by those directives are processed whenever the option file is processed, no matter where they appear in the file. 
+Nếu 1 file tùy chọn bao gồm các chỉ thị`!include` hoặc `!includedir`các file được gọi bởi các chỉ thị đó được xử lý mỗi khi file tùy chọn được xử lý, không quan tâm đến việc chúng xuất hiện ở đâu trong file
 
 [1]: https://dev.mysql.com/mysqld.html "4.3.1 mysqld — The MySQL Server"
 [2]: https://dev.mysql.com/server-options.html#option_mysqld_verbose
