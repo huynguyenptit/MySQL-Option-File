@@ -1,8 +1,5 @@
-[Source](https://dev.mysql.com/doc/refman/5.7/en/option-files.html "Permalink to MySQL :: MySQL 5.7 Reference Manual :: 4.2.6 Using Option Files")
 
-# MySQL :: MySQL 5.7 Reference Manual :: 4.2.6 Using Option Files
-
-### 4.2.6 Sử dụng các tệp tin cấu hình
+### 4.2.6 Sử dụng các file tùy chọn
 
 Hầu hết các chương trình MySQL đều có thể đọc các tùy chọn khởi động từ các file tùy chọn (thường được gọi là các file cấu hình). Các file tuỳ chọn cung cấp 1 cách thuận tiện nhất để sử dụng các tùy chọn thường được chỉ định để chúng không cần phải nhập vào mỗi dòng lệnh khi bạn chạy một chương trình nào đó.
 
@@ -10,17 +7,17 @@ Hầu hết các chương trình MySQL đều có thể đọc các tùy chọn 
 
 Chú ý: 
 
-Một chương trình MySQL thường được bắt đầu với việc đọc tùy chọn `\--no-defaults`, không có file tùy chọn nào khác ngoài file `.mylogin.cnf`. 
+Một chương trình MySQL thường được bắt đầu với việc đọc tùy chọn `\--no-defaults`, không đọc file tùy chọn nào khác ngoài file `.mylogin.cnf`. 
 
 Nhiều file tùy chọn là những file văn bản thông thường, được tạo bởi bất kì 1 trình chỉnh sửa văn bản nào. Có một ngoại lệ là file `.mylogin.cnf` có chứa các tùy chọn về đường dẫn khi đăng nhập.Đây là một file được mã hóa, tạo bởi tiện ích thuộc [**trình soạn thảo cấu hình mysql**][4]. Xem trong [Section 4.6.6, "**trình soạn thảo cấu hình mysql** — MySQL Configuration Utility"][4]. Một "đường dẫn đăng nhập" là một nhóm các tùy chọn mà chỉ cho phép một số các tùy chọn cố định như: `host`, `user`, `password`, `port` và `socket`. những chương trình phía Client được chỉ định với đường dẫn đăng nhập được đọc từ file `.mylogin.cnf`, sử dụng tùy chọn [`\--login-path`][5]. 
 
-Để chỉ định thay thế tên tệp đường dẫn đăng nhập, đặt biến môi trường `MYSQL_TEST_LOGIN_FILE`. Biến này được sử dụng bởi công cụ kiểm thử **mysql-test-run.pl**, nhưng cũng được công nhận trong [**mysql_config_editor**][4] và trong các client của MySQL như [**mysql**][6], [**mysqladmin**][7], và những client khác. 
+Để chỉ định một tên file chứa đường dẫn đăng nhập thay thế, đặt biến môi trường `MYSQL_TEST_LOGIN_FILE`. Biến này được sử dụng bởi công cụ kiểm thử **mysql-test-run.pl**, nhưng cũng được công nhận trong [**mysql_config_editor**][4] và trong các client của MySQL như [**mysql**][6], [**mysqladmin**][7], và những client khác. 
 
 MySQL tìm kiếm những file tùy chọn theo thứ tự được mô tả trong cuộc thảo luận sau và đọc bất cứ nội dung nào tồn tại. Nếu một file tùy chọn mà bạn muốn sử dụng nhưng nó không tồn tại, hãy tạo nó bằng 1 phương pháp thích hợp, như vừa thảo luận. 
 
 Trên môi trường Windows, Các chương trình MySQL đọc các tùy chọn khởi động từ những file hiển thị trong những bảng sau, theo 1 thứ tự đã được chỉ định (Các file liệt kê đầu danh sách được đọc trước, các file được đọc theo thứ tự ưu tiên). 
 
-**Bảng 4.1 file tùy chọn được đọc trên môi trường hệ thống windows**
+**Bảng 4.1 Các file tùy chọn đọc trên Windows**
 
 | File Name (Tên file)                                                                       | Purpose (Mục đích)                                                       |  
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------- |  
@@ -31,7 +28,7 @@ Trên môi trường Windows, Các chương trình MySQL đọc các tùy chọn
 | `defaults-extra-file`                                                                      | file được chỉ định với [`\--defaults-extra-file`][8] nếu có |  
 | ``%APPDATA%`MySQL.mylogin.cnf`                                                             | tùy chọn đường dẫn đăng nhập (chỉ dành cho các client)                             |  
 
-Trong bảng trước, `%PROGRAMDATA%` đại diện cho thư mục file hệ thống chứa dữ liệu của ứng dụng cho tất cả các người dùng trên máy chủ. Đường dẫn này mặc định là `C:ProgramData`  trên Microsoft Windows Vista hoặc các phiên bản mới hơn, và `C:Documents and SettingsAll UsersApplication Data` trên các phiên bản cũ của Microsoft Windows. 
+Trong bảng trên, `%PROGRAMDATA%` đại diện cho thư mục file hệ thống chứa dữ liệu của ứng dụng cho tất cả các người dùng trên máy chủ. Đường dẫn này mặc định là `C:ProgramData`  trên Microsoft Windows Vista hoặc các phiên bản mới hơn, và `C:Documents and SettingsAll UsersApplication Data` trên các phiên bản cũ của Microsoft Windows. 
 
 `%WINDIR%` đại diện cho vị trí thư mục Windows của bạn.Nó thường là `C:WINDOWS`. Sử dụng lệnh sau để xác định vị trí chính xác của nó từ giá trị của biến môi trường `WINDIR`: 
     
@@ -43,7 +40,7 @@ Trong bảng trước, `%PROGRAMDATA%` đại diện cho thư mục file hệ th
     
     C:> echo %APPDATA%
 
-_`BASEDIR`_ đại diện cho thư mục gốc khi cài đặt MySQL. Khi MySQL 5.7 cài đặt hoàn tất bằng trình cài đặt MySQL,nó thường là `C:_`PROGRAMDIR`_MySQLMySQL 5.7 Server`, nơi m à_`PROGRAMDIR`_ đại diện thư mục của chương trình (thường là `Program Files` trên các phiên bản tiếng Anh của Windows), Xem thêm tại [Section 2.3.3, "MySQL Installer for Windows"][9]. 
+_`BASEDIR`_ đại diện cho thư mục gốc khi cài đặt MySQL. Khi MySQL 5.7 cài đặt hoàn tất bằng trình cài đặt MySQL Installer,nó thường là `C:_`PROGRAMDIR`_MySQLMySQL 5.7 Server`, nơi m à_`PROGRAMDIR`_ đại diện thư mục của chương trình (thường là `Program Files` trên các phiên bản tiếng Anh của Windows), Xem thêm tại [Section 2.3.3, "MySQL Installer for Windows"][9]. 
 
 Trên các hệ thống Unix và tương tự Unix, các chương trình MySQL đọc các file khởi động từ các file được biểu diễn trong bảng sau, theo một thứ tự nhất định ( các file đầu danh sách được đọc trước, và các file được đọc theo thứ tự ưu tiên). 
 
@@ -54,15 +51,15 @@ Trên các nền tảng Unix, MySQL bỏ qua các file cấu hình mà chúng c�
 **Bảng 4.2 Các file tùy chọn được đọc trên các hệ thống Unix và tương tự Unix**
 
 
-| File Name               | Purpose                                                       |  
+| Tên file               | Mục đích                                                       |  
 | ----------------------- | ------------------------------------------------------------- |  
-| `/etc/my.cnf`           | Global options                                                |  
-| `/etc/mysql/my.cnf`     | Global options                                                |  
-| `_`SYSCONFDIR`_/my.cnf` | Global options                                                |  
-| `$MYSQL_HOME/my.cnf`    | Server-specific options (server only)                         |  
-| `defaults-extra-file`   | The file specified with [`\--defaults-extra-file`][8], if any |  
-| `~/.my.cnf`             | User-specific options                                         |  
-| `~/.mylogin.cnf`        | User-specific login path options (clients only)               |  
+| `/etc/my.cnf`           | Sử dụng toàn cục                                                |  
+| `/etc/mysql/my.cnf`     | Sử dụng toàn cục                                                |  
+| `_`SYSCONFDIR`_/my.cnf` | Sử dụng toàn cục                                                 |  
+| `$MYSQL_HOME/my.cnf`    | Tùy chọn chỉ định của Server (dành cho server)                         |  
+| `defaults-extra-file`   | file đã chỉ định với [`\--defaults-extra-file`][8], nếu có |  
+| `~/.my.cnf`             | Tùy chọn chỉ định của User                                       |  
+| `~/.mylogin.cnf`        | Tùy chọn đường dẫn đăng nhập chỉ định của USER (dành cho Client)               |  
 
 Trong bảng trước,dấu `~` đại diện cho thư mục home của user hiện tại ( giá trị của biến `$HOME`). 
 
@@ -152,7 +149,7 @@ Liệt kê thêm những nhóm tùy chọn chung  và sau đó là các nhóm đ
     no-auto-rehash
     connect_timeout=2
 
-để tạo ra nhóm tùy chọn chỉ được đọc bởi các máy chủ **[mysqld**][1] từ hàng loạt các bản phát hành MySQL cụ thể, sử dụng các group với các tên như `[mysqld-5.6]`, `[mysqld-5.7]`, và tương tự thế. CÁc nhóm sau chỉ ra rằng cài đặt `[sql_mode`][18]  chỉ nên được sử dụng với các máy chủ MySQL từ phiên bản  5.7.x trở lên: 
+để tạo ra nhóm tùy chọn chỉ được đọc bởi các trình **[mysqld**][1] server từ hàng loạt các bản phát hành MySQL cụ thể, sử dụng các group với các tên như `[mysqld-5.6]`, `[mysqld-5.7]`, và tương tự thế. CÁc nhóm sau chỉ ra rằng cài đặt `[sql_mode`][18]  chỉ nên được sử dụng với các máy chủ MySQL từ phiên bản  5.7.x trở lên: 
     
     
     [mysqld-5.7]
@@ -189,7 +186,7 @@ Và giả sử là `/home/mydir/myopt.cnf` trông như thế này:
     [mysqld]
     key_buffer_size=16M
 
-Nếu  `my.cnf` được xử lý bởi **[mysqld**][1], chỉ nhóm`[mysqld]` trong `/home/mydir/myopt.cnf` được sử dụng. Nếu file này được sử lý bởi **[mysqladmin**][7], chỉ có nhóm `[mysqladmin]` được sử dụng. Nếu file được xử lý bởi bất kỳ chương trình nào khác,không có tùy chọn nào trong `/home/mydir/myopt.cnf` được sử dụng. 
+Nếu  `my.cnf` được xử lý bởi **[mysqld**][1], chỉ nhóm`[mysqld]` trong `/home/mydir/myopt.cnf` được sử dụng. Nếu file này được xử lý bởi **[mysqladmin**][7], chỉ có nhóm `[mysqladmin]` được sử dụng. Nếu file được xử lý bởi bất kỳ chương trình nào khác,không có tùy chọn nào trong `/home/mydir/myopt.cnf` được sử dụng. 
 
 Chỉ thị  `!includedir` được xử lý tương tự trừ khi tất cả các file tùy chọn trong thư mục được gọi, được đọc. 
 
